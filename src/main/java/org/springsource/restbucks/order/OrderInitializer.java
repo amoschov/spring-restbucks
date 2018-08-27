@@ -17,6 +17,8 @@ package org.springsource.restbucks.order;
 
 import static org.springsource.restbucks.core.Currencies.*;
 
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
@@ -37,6 +39,7 @@ import org.springframework.stereotype.Service;
 class OrderInitializer {
 
 	private final @NonNull OrderRepository orders;
+	private final @NonNull MeterRegistry registry;
 
 	/**
 	 * Creates two orders and persists them using the given {@link OrderRepository}.
@@ -49,6 +52,9 @@ class OrderInitializer {
 		if (orders.count() != 0) {
 			return;
 		}
+
+		registry.gauge("entity.status.count", Arrays.asList(Tag.of("type", "order"), Tag.of("status", Order.Status.PAYMENT_EXPECTED.toString())),
+				orders, orderRepository -> orderRepository.findByStatus(Order.Status.PAYMENT_EXPECTED).size());
 
 		LineItem javaChip = new LineItem("Java Chip", Money.of(4.20, EURO));
 		LineItem cappuchino = new LineItem("Cappuchino", Money.of(3.20, EURO));

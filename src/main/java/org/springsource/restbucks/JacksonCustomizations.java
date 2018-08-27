@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 import javax.money.MonetaryAmount;
 import javax.money.format.MonetaryFormats;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.javamoney.moneta.Money;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -79,13 +80,13 @@ class JacksonCustomizations {
 		static abstract class OrderMixin {
 
 			@JsonCreator
-			public OrderMixin(Collection<LineItem> lineItems, Location location) {}
+			public OrderMixin(@JsonProperty("lineItems") Collection<LineItem> lineItems, @JsonProperty("location") Location location) {}
 		}
 
 		static abstract class LineItemMixin {
 
 			@JsonCreator
-			public LineItemMixin(String name, int quantity, Milk milk, Size size, MonetaryAmount price) {}
+			public LineItemMixin(@JsonProperty("name") String name, @JsonProperty("quantity") int quantity, @JsonProperty("milk") Milk milk, @JsonProperty("size") Size size, @JsonProperty("price") MonetaryAmount price) {}
 		}
 
 		@JsonAutoDetect(isGetterVisibility = JsonAutoDetect.Visibility.NONE)
