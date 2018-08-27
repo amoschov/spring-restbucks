@@ -1,0 +1,12 @@
+{
+  "location": "TAKE_AWAY",
+  "lineItems": [
+    {
+      "name": "Java Mocha",
+      "quantity": 1,
+      "milk": "Low-fat",
+      "size": "Large",
+      "price": "EUR4.20"
+    }
+  ]
+}
